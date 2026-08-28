@@ -23,64 +23,89 @@ export const useProviderAuth = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Check for stored session
-    let storedUser = sessionStorage.getItem('auth_user');
-    const storedProvider = sessionStorage.getItem('auth_provider');
-    const clinicSession = sessionStorage.getItem('pawtectors_clinic_session');
-    const pawtectorsAuth = sessionStorage.getItem('pawtectors_auth');
-    
-    // Check for clinic session or provider login if auth_user is not directly set
-    if (!storedUser) {
-      try {
+    try {
+      // Check for stored session
+      let storedUser = sessionStorage.getItem('auth_user');
+      const storedProvider = sessionStorage.getItem('auth_provider');
+      const clinicSession = sessionStorage.getItem('pawtectors_clinic_session');
+      const pawtectorsAuth = sessionStorage.getItem('pawtectors_auth');
+      
+      const defaultClinicProvider: ProviderProfile = {
+        id: 'demo-clinic-id',
+        name: 'Pawtectors Veterinary Center',
+        category: 'clinic',
+        email: 'dr.amit@vetclinic.com',
+        phone: '9876543210'
+      };
+
+      // Check for clinic session or provider login if auth_user is not directly set
+      if (!storedUser) {
         if (clinicSession) {
-          const parsed = JSON.parse(clinicSession);
-          if (parsed.email || parsed.id) {
-            storedUser = JSON.stringify({ id: parsed.id || 'demo-clinic-id', email: parsed.email || 'dr.amit@vetclinic.com' });
-            sessionStorage.setItem('auth_user', storedUser);
-          }
-        } else if (pawtectorsAuth) {
-          const parsed = JSON.parse(pawtectorsAuth);
-          if (parsed.email || parsed.id) {
-            storedUser = JSON.stringify({ id: parsed.id || 'demo-clinic-id', email: parsed.email || 'dr.amit@vetclinic.com' });
-            sessionStorage.setItem('auth_user', storedUser);
-          }
-        } else {
-          const savedLogin = sessionStorage.getItem('pawtectors_provider_login');
-          if (savedLogin) {
-            const parsed = JSON.parse(savedLogin);
-            if (parsed.id && parsed.email) {
-              storedUser = JSON.stringify({ id: parsed.id, email: parsed.email });
+          try {
+            const parsed = JSON.parse(clinicSession);
+            if (parsed && (parsed.email || parsed.id)) {
+              storedUser = JSON.stringify({ id: parsed.id || 'demo-clinic-id', email: parsed.email || 'dr.amit@vetclinic.com' });
               sessionStorage.setItem('auth_user', storedUser);
             }
+          } catch (e) {
+            console.warn('[useProviderAuth] Invalid clinicSession JSON:', e);
+          }
+        } else if (pawtectorsAuth) {
+          try {
+            const parsed = JSON.parse(pawtectorsAuth);
+            if (parsed && (parsed.email || parsed.id)) {
+              storedUser = JSON.stringify({ id: parsed.id || 'demo-clinic-id', email: parsed.email || 'dr.amit@vetclinic.com' });
+              sessionStorage.setItem('auth_user', storedUser);
+            }
+          } catch (e) {
+            console.warn('[useProviderAuth] Invalid pawtectorsAuth JSON:', e);
+          }
+        } else {
+          try {
+            const savedLogin = sessionStorage.getItem('pawtectors_provider_login');
+            if (savedLogin) {
+              const parsed = JSON.parse(savedLogin);
+              if (parsed && parsed.id && parsed.email) {
+                storedUser = JSON.stringify({ id: parsed.id, email: parsed.email });
+                sessionStorage.setItem('auth_user', storedUser);
+              }
+            }
+          } catch (e) {
+            console.warn('[useProviderAuth] Invalid savedLogin JSON:', e);
           }
         }
-      } catch (err) {
-        console.error('[useProviderAuth] Error parsing saved login session:', err);
       }
-    }
-    
-    const defaultClinicProvider: ProviderProfile = {
-      id: 'demo-clinic-id',
-      name: 'Pawtectors Veterinary Center',
-      category: 'clinic',
-      email: 'dr.amit@vetclinic.com',
-      phone: '9876543210'
-    };
-
-    if (storedUser) {
-      const parsedUser = JSON.parse(storedUser);
-      setUser(parsedUser);
-      if (storedProvider) {
+      
+      if (storedUser) {
         try {
-          setProvider(JSON.parse(storedProvider));
-        } catch {
+          const parsedUser = JSON.parse(storedUser);
+          if (parsedUser && typeof parsedUser === 'object') {
+            setUser(parsedUser);
+          }
+        } catch (e) {
+          console.warn('[useProviderAuth] Invalid storedUser JSON:', e);
+        }
+
+        if (storedProvider) {
+          try {
+            const parsedProv = JSON.parse(storedProvider);
+            if (parsedProv && typeof parsedProv === 'object') {
+              setProvider(parsedProv);
+            } else {
+              setProvider(defaultClinicProvider);
+            }
+          } catch {
+            setProvider(defaultClinicProvider);
+          }
+        } else {
           setProvider(defaultClinicProvider);
         }
-      } else {
-        setProvider(defaultClinicProvider);
       }
+    } catch (err) {
+      console.error('[useProviderAuth] Error initializing auth state:', err);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   }, []);
 
   const signInWithEmail = async (email: string, password: string) => {
