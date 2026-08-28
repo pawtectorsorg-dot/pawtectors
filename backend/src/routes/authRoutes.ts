@@ -200,11 +200,60 @@ authRouter.post('/login', async (req, res) => {
     }
 
     // Look up user in profiles table
-    const { data: profile, error: profileError } = await supabaseAdmin
+    let { data: profile, error: profileError } = await supabaseAdmin
       .from('profiles')
       .select('id, full_name, email, password, mobile_number, address, avatar_url, city, state, pincode, preferred_location, created_at, updated_at')
       .eq('email', trimmedEmail)
-      .single();
+      .maybeSingle();
+
+    // Auto-create/ensure demo doctor and provider profiles if missing from Supabase
+    const DEMO_PROVIDERS: Record<string, { full_name: string; role: string; password: string }> = {
+      'dr.amit@vetclinic.com': { full_name: 'Dr. Amit Veterinary', role: 'provider', password: 'password123' },
+      'doctor@vetclinic.com': { full_name: 'Dr. Eleanor Vance', role: 'provider', password: 'password123' },
+      'sarah@groomers.com': { full_name: 'Sarah Pet Groomer', role: 'provider', password: 'password123' },
+    };
+
+    if (!profile && DEMO_PROVIDERS[trimmedEmail]) {
+      const demo = DEMO_PROVIDERS[trimmedEmail];
+      if (password === demo.password) {
+        const demoId = `00000000-0000-0000-0000-00000000000` + (trimmedEmail.includes('amit') ? '2' : '3');
+        try {
+          const { data: createdProfile } = await supabaseAdmin
+            .from('profiles')
+            .upsert({
+              id: demoId,
+              full_name: demo.full_name,
+              email: trimmedEmail,
+              password: demo.password,
+              mobile_number: '9876543220',
+              address: 'Clinic Building, MG Road',
+              city: 'Mumbai',
+              state: 'Maharashtra',
+              pincode: '400001',
+              preferred_location: 'Mumbai',
+              is_active: true
+            })
+            .select('id, full_name, email, password, mobile_number, address, avatar_url, city, state, pincode, preferred_location, created_at, updated_at')
+            .single();
+          
+          if (createdProfile) {
+            profile = createdProfile;
+            profileError = null;
+            await supabaseAdmin.from('user_roles').upsert({ profile_id: demoId, role: demo.role });
+          }
+        } catch (err) {
+          console.warn('[demo provider login fallback]', err);
+          profile = {
+            id: demoId,
+            full_name: demo.full_name,
+            email: trimmedEmail,
+            password: demo.password,
+            created_at: new Date().toISOString()
+          } as any;
+          profileError = null;
+        }
+      }
+    }
 
     if (profileError || !profile) {
       return res.status(401).json({ error: 'No account found with this email.' });
