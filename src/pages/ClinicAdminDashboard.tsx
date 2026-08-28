@@ -875,10 +875,10 @@ const ClinicAdminDashboard = () => {
 
             <div className="flex items-center gap-3 border-l border-white/20 pl-5">
               <div className="w-9 h-9 bg-sky-600 rounded-xl flex items-center justify-center font-bold text-white shadow-inner cursor-pointer" onClick={signOut} title="Click to log out">
-                {provider.name[0].toUpperCase()}
+                {provider?.name ? provider.name[0].toUpperCase() : 'C'}
               </div>
               <div className="hidden sm:block text-left">
-                <p className="text-xs font-semibold">{provider.name}</p>
+                <p className="text-xs font-semibold">{provider?.name || 'Clinic Admin'}</p>
                 <p className="text-[10px] text-sky-200/80">Clinic Admin &bull; <span className="underline cursor-pointer" onClick={signOut}>Logout</span></p>
               </div>
             </div>
