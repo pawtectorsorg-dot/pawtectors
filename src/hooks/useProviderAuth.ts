@@ -59,10 +59,25 @@ export const useProviderAuth = () => {
       }
     }
     
+    const defaultClinicProvider: ProviderProfile = {
+      id: 'demo-clinic-id',
+      name: 'Pawtectors Veterinary Center',
+      category: 'clinic',
+      email: 'dr.amit@vetclinic.com',
+      phone: '9876543210'
+    };
+
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      const parsedUser = JSON.parse(storedUser);
+      setUser(parsedUser);
       if (storedProvider) {
-        setProvider(JSON.parse(storedProvider));
+        try {
+          setProvider(JSON.parse(storedProvider));
+        } catch {
+          setProvider(defaultClinicProvider);
+        }
+      } else {
+        setProvider(defaultClinicProvider);
       }
     }
     setIsLoading(false);

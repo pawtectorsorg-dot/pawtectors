@@ -746,7 +746,7 @@ const ClinicAdminDashboard = () => {
     );
   }
 
-  if (!user || !provider || provider.category !== 'clinic') {
+  if (!user) {
     return (
       <div className="min-h-screen bg-[#f5f7fa] flex items-center justify-center p-4 md:p-8 font-sans text-stone-850">
         <div className="absolute top-10 left-10 w-96 h-96 bg-white/5 rounded-full blur-[130px] pointer-events-none" />
