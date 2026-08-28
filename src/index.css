@@ -1,0 +1,260 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 25% 98%;
+    --foreground: 210 30% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 210 30% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 210 30% 12%;
+
+    --primary: 210 100% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 175 65% 45%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 210 20% 94%;
+    --muted-foreground: 210 15% 45%;
+
+    --accent: 190 80% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 210 20% 88%;
+    --input: 210 20% 88%;
+    --ring: 210 100% 50%;
+
+    --radius: 1rem;
+
+    /* Custom tokens - Blue to Teal gradient theme */
+    --gradient-hero: linear-gradient(135deg, hsl(210, 100%, 50%) 0%, hsl(190, 80%, 50%) 50%, hsl(175, 65%, 45%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(0, 0%, 100%) 0%, hsl(210, 25%, 98%) 100%);
+    --gradient-teal: linear-gradient(135deg, hsl(175, 65%, 45%) 0%, hsl(180, 60%, 55%) 100%);
+
+    /* Refined auth-page gradient: deeper, richer blue-teal (same family, more depth) */
+    --gradient-auth: linear-gradient(135deg, hsl(221, 83%, 45%) 0%, hsl(199, 89%, 42%) 50%, hsl(172, 66%, 38%) 100%);
+    --gradient-auth-wash: linear-gradient(180deg, hsl(210, 45%, 97%) 0%, hsl(199, 40%, 95%) 45%, hsl(172, 30%, 95%) 100%);    
+
+    --shadow-soft: 0 4px 20px -4px hsl(210 100% 50% / 0.15);
+    --shadow-card: 0 8px 30px -8px hsl(210 30% 12% / 0.1);
+    --shadow-glow: 0 0 40px hsl(210 100% 50% / 0.3);
+
+    --font-display: 'Quicksand', sans-serif;
+    --font-body: 'Nunito', sans-serif;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 210 100% 50%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 210 20% 95%;
+    --sidebar-accent-foreground: 210 30% 12%;
+    --sidebar-border: 210 20% 91%;
+    --sidebar-ring: 210 100% 50%;
+  }
+
+  .dark {
+    --background: 210 25% 8%;
+    --foreground: 210 20% 95%;
+
+    --card: 210 20% 12%;
+    --card-foreground: 210 20% 95%;
+
+    --popover: 210 20% 12%;
+    --popover-foreground: 210 20% 95%;
+
+    --primary: 210 100% 55%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 175 60% 50%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 210 20% 18%;
+    --muted-foreground: 210 15% 60%;
+
+    --accent: 190 75% 55%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 62% 45%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 210 20% 22%;
+    --input: 210 20% 22%;
+    --ring: 210 100% 55%;
+
+    --gradient-hero: linear-gradient(135deg, hsl(210, 100%, 55%) 0%, hsl(190, 75%, 55%) 50%, hsl(175, 60%, 50%) 100%);
+
+    --sidebar-background: 210 25% 10%;
+    --sidebar-foreground: 210 20% 95%;
+    --sidebar-primary: 210 100% 55%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 20% 15%;
+    --sidebar-accent-foreground: 210 20% 95%;
+    --sidebar-border: 210 20% 18%;
+    --sidebar-ring: 210 100% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html, body, #root {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+  }
+}
+
+@layer utilities {
+  .gradient-hero {
+    background: var(--gradient-hero);
+  }
+
+  .gradient-teal {
+    background: var(--gradient-teal);
+  }
+
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .text-gradient {
+    background: var(--gradient-hero);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ─── Auth pages (login/signup) — shared scene ─────────────────────── */
+  .auth-scene {
+    position: relative;
+    background: var(--gradient-auth-wash);
+    overflow: hidden;
+  }
+
+  .auth-scene::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='%23134e4a'%3E%3Cellipse cx='30' cy='22' rx='5' ry='7'/%3E%3Cellipse cx='44' cy='16' rx='5' ry='7'/%3E%3Cellipse cx='58' cy='22' rx='5' ry='7'/%3E%3Cellipse cx='44' cy='40' rx='11' ry='9'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 140px 140px;
+    pointer-events: none;
+  }
+
+  .auth-scene .auth-blob {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(70px);
+    opacity: 0.35;
+    pointer-events: none;
+  }
+
+  .auth-card {
+    position: relative;
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border) / 0.6);
+    box-shadow: var(--shadow-card);
+  }
+
+  .auth-badge {
+    background: var(--gradient-auth);
+    box-shadow: var(--shadow-glow);
+  }
+
+  /* Pemilyy Brand Utilities */
+  .font-pemilyy {
+    font-family: 'Urbanist', sans-serif;
+  }
+  .bg-pemilyy-dark {
+    background-color: #0f172a;
+  }
+  .text-pemilyy-dark {
+    color: #0f172a;
+  }
+  .bg-pemilyy-primary {
+    background-color: #0ea5e9;
+  }
+  .text-pemilyy-primary {
+    color: #0ea5e9;
+  }
+  .bg-pemilyy-beige {
+    background-color: #f5f2ee;
+  }
+  .bg-pemilyy-sand {
+    background-color: #ede9e2;
+  }
+  .bg-pemilyy-mint {
+    background-color: #d9fdd3;
+  }
+  .text-pemilyy-whatsapp {
+    color: #128c4a;
+  }
+  .bg-pemilyy-whatsapp {
+    background-color: #128c4a;
+  }
+  .border-pemilyy-beige {
+    border-color: #e5e5e0;
+  }
+}
+
+@layer components {
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-bounce-soft {
+    animation: bounce-soft 2s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @keyframes bounce-soft {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+}
+
+/* Global hard reset to override all template margins/paddings on all pages */
+html, body, #root {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+}

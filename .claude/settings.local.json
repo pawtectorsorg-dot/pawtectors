@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsc *)",
+      "Bash(grep -v \"// NOTE:\")",
+      "Bash(xargs grep -l \"demoAuth\\\\|demoRole\")"
+    ]
+  }
+}

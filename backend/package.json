@@ -1,0 +1,39 @@
+{
+  "name": "pawtectors-backend",
+  "version": "1.0.0",
+  "description": "Backend API for Pawtectors - Pet Care Platform",
+  "main": "dist/server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node --import tsx src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "migration": "node --import tsx src/migrations/runMigrations.ts"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.37.0",
+    "@types/multer": "^2.0.0",
+    "cloudinary": "^2.9.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-async-errors": "^3.1.1",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.2",
+    "nodemailer": "^7.0.0",
+    "razorpay": "^2.8.5",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/cookie-parser": "^1.4.10",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^22.16.5",
+    "@types/nodemailer": "^8.0.1",
+    "@types/uuid": "^10.0.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.8.3"
+  }
+}
