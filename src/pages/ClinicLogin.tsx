@@ -53,19 +53,23 @@ const ClinicLogin = () => {
       }
 
       const clinicSession = {
-        id: response.user.id || 'demo-clinic-id',
-        email: response.user.email || email,
+        id: response?.user?.id || 'demo-clinic-id',
+        email: response?.user?.email || email,
         role: 'clinic_admin',
         clinic_name: 'Pawtectors Veterinary Center',
-        clinic_id: response.user.clinic_id || 'demo-clinic-id',
+        clinic_id: response?.user?.clinic_id || 'demo-clinic-id',
       };
 
+      const authUser = { id: clinicSession.id, email: clinicSession.email };
+      sessionStorage.setItem('auth_user', JSON.stringify(authUser));
+      sessionStorage.setItem('pawtectors_provider_auth', JSON.stringify(authUser));
       sessionStorage.setItem('pawtectors_auth', JSON.stringify(clinicSession));
       sessionStorage.setItem('pawtectors_clinic_session', JSON.stringify(clinicSession));
+      sessionStorage.setItem('pawtectors_provider_login', JSON.stringify({ id: authUser.id, email: authUser.email, savedAt: new Date().toISOString() }));
 
       navigate('/clinic/dashboard');
     } catch (error) {
-      console.error('[ClinicLogin] Login error:', error);
+      console.error('[ClinicLogin] Backend auth error, falling back to demo session:', error);
       const clinicSession = {
         id: 'demo-clinic-id',
         email: email,
@@ -73,8 +77,13 @@ const ClinicLogin = () => {
         clinic_name: 'Pawtectors Veterinary Center',
         clinic_id: 'demo-clinic-id',
       };
+
+      const authUser = { id: clinicSession.id, email: clinicSession.email };
+      sessionStorage.setItem('auth_user', JSON.stringify(authUser));
+      sessionStorage.setItem('pawtectors_provider_auth', JSON.stringify(authUser));
       sessionStorage.setItem('pawtectors_auth', JSON.stringify(clinicSession));
       sessionStorage.setItem('pawtectors_clinic_session', JSON.stringify(clinicSession));
+      sessionStorage.setItem('pawtectors_provider_login', JSON.stringify({ id: authUser.id, email: authUser.email, savedAt: new Date().toISOString() }));
       
       navigate('/clinic/dashboard');
     } finally {
