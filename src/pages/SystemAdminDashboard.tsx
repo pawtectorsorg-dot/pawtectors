@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { clearAllAuthData } from '@/utils/auth';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -229,16 +230,7 @@ const SystemAdminDashboard = () => {
   });
 
   const handleLogout = () => {
-    sessionStorage.removeItem('adminType');
-    sessionStorage.removeItem('adminEmail');
-    sessionStorage.removeItem('pawtectors_admin_session');
-    sessionStorage.removeItem('pawtectors_admin_login');
-    sessionStorage.removeItem('pawtectors_auth');
-    sessionStorage.removeItem('pawtectors_login_details');
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('user');
-    sessionStorage.removeItem('profile');
-    sessionStorage.removeItem('role');
+    clearAllAuthData();
     window.location.href = '/admin';
   };
 

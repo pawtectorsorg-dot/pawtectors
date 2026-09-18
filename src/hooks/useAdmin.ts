@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { authApi } from '@/lib/api';
+import { clearAllAuthData } from '@/utils/auth';
 
 const ADMIN_KEY = 'pawtectors_admin_session';
 const ADMIN_PASSWORD = 'pawtectors123'; // In production, this would be handled by a proper auth system
@@ -131,16 +132,8 @@ export const useAdmin = () => {
   };
 
   const logout = () => {
-    // Clear admin session and saved login details
-    sessionStorage.removeItem(ADMIN_KEY);
-    sessionStorage.removeItem('pawtectors_auth');
-    sessionStorage.removeItem('pawtectors_admin_login');
-    
-    // Clear any other auth-related data
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('user');
-    sessionStorage.removeItem('profile');
-    sessionStorage.removeItem('role');
+    // Clear all auth data comprehensively
+    clearAllAuthData();
     
     setIsAdmin(false);
     

@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect, ReactNode } from 'react';
+import { clearAllAuthData } from '@/utils/auth';
 
 /**
  * Profile shape returned by the backend (matches the `profiles` table minus password).
@@ -249,22 +250,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const signOut = async () => {
     fetch('/auth/logout', { method: 'POST' }).catch(() => {});
     
-    // Clear all authentication data including persistent login details
-    sessionStorage.removeItem(AUTH_STORAGE_KEY);
-    sessionStorage.removeItem('pawtectors_login_details');
-    sessionStorage.removeItem('pawtectors_admin_session');
-    sessionStorage.removeItem('pawtectors_admin_login');
-    sessionStorage.removeItem('pawtectors_provider_auth');
-    sessionStorage.removeItem('pawtectors_provider_login');
-    sessionStorage.removeItem('auth_token');
-    sessionStorage.removeItem('auth_user');
-    sessionStorage.removeItem('auth_provider');
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('user');
-    sessionStorage.removeItem('profile');
-    sessionStorage.removeItem('role');
-    sessionStorage.removeItem('adminType');
-    sessionStorage.removeItem('adminEmail');
+    // Clear all authentication data comprehensively
+    clearAllAuthData();
     
     setUser(null);
     setProfile(null);

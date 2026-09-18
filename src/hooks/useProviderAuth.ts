@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { authApi, providersApi, type ProviderRow } from '@/lib/api';
+import { clearAllAuthData } from '@/utils/auth';
 
 export type ServiceCategory = 'clinic' | 'grooming' | 'boarding' | 'training';
 
@@ -197,20 +198,8 @@ export const useProviderAuth = () => {
       console.error('Logout error:', err);
     }
     
-    // Clear provider auth data including saved login details
-    sessionStorage.removeItem('auth_token');
-    sessionStorage.removeItem('auth_user');
-    sessionStorage.removeItem('auth_provider');
-    sessionStorage.removeItem('pawtectors_provider_auth');
-    sessionStorage.removeItem('pawtectors_provider_login');
-    
-    // Clear all auth-related data
-    sessionStorage.removeItem('pawtectors_auth');
-    sessionStorage.removeItem('pawtectors_admin_session');
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('user');
-    sessionStorage.removeItem('profile');
-    sessionStorage.removeItem('role');
+    // Clear all auth data comprehensively
+    clearAllAuthData();
     
     setUser(null);
     setProvider(null);

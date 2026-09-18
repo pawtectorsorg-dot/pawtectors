@@ -13,7 +13,6 @@ import ClinicDashboard from "./pages/ClinicDashboard";
 import ClinicAdminDashboard from "./pages/ClinicAdminDashboard";
 import PetParentDashboard from "./pages/PetParentDashboard";
 import UserLogin from "./pages/UserLogin";
-import ClinicLogin from "./pages/ClinicLogin";
 import AdminRoleSelect from "./pages/AdminRoleSelect";
 import SystemAdminLogin from "./pages/SystemAdminLogin";
 import ProviderAdminSelect from "./pages/ProviderAdminSelect";
@@ -36,24 +35,29 @@ const App = () => {
                 <Sonner />
                 <BrowserRouter>
                   <Routes>
+                    {/* Home Landing Page */}
                     <Route path="/" element={<Index />} />
+                    
+                    {/* User & Pet Parent Portals */}
                     <Route path="/login" element={<UserLogin />} />
                     <Route path="/forgot-password" element={<ForgotPassword />} />
                     <Route path="/profile" element={<UserProfile />} />
                     <Route path="/dashboard" element={<PetParentDashboard />} />
                     <Route path="/clinics" element={<Clinics />} />
                     
-                    {/* Admin & Clinic Portals */}
+                    {/* Admin & Hospital Portals */}
                     <Route path="/admin" element={<AdminRoleSelect />} />
                     <Route path="/admin/login" element={<AdminRoleSelect />} />
-                    <Route path="/clinic/login" element={<ClinicLogin />} />
+                    <Route path="/clinic/login" element={<ClinicAdminDashboard />} />
                     <Route path="/admin/super" element={<SystemAdminLogin />} />
-                    <Route path="/admin/provider" element={<ProviderAdminSelect />} />
+                    <Route path="/admin/provider" element={<ClinicAdminDashboard />} />
                     <Route path="/dashboard/system" element={<SystemAdminDashboard />} />
-                    {/* Clinic Admin Dashboard — fully wired to real API */}
+                    
+                    {/* Hospital Workspace */}
                     <Route path="/clinic/dashboard" element={<ClinicAdminDashboard />} />
                     <Route path="/provider/clinic" element={<ClinicDashboard />} />
                     
+                    {/* Fallback */}
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </BrowserRouter>

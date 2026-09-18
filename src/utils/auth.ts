@@ -10,16 +10,21 @@
 export const clearAllAuthData = (): void => {
   // Admin authentication
   sessionStorage.removeItem('pawtectors_admin_session');
+  sessionStorage.removeItem('pawtectors_admin_login');
   sessionStorage.removeItem('adminType');
   sessionStorage.removeItem('adminEmail');
   
   // Customer authentication
   sessionStorage.removeItem('pawtectors_auth');
+  sessionStorage.removeItem('pawtectors_login_details');
   
-  // Provider authentication
+  // Provider / Clinic authentication
   sessionStorage.removeItem('auth_token');
   sessionStorage.removeItem('auth_user');
   sessionStorage.removeItem('auth_provider');
+  sessionStorage.removeItem('pawtectors_provider_auth');
+  sessionStorage.removeItem('pawtectors_provider_login');
+  sessionStorage.removeItem('pawtectors_clinic_session');
   
   // Generic auth data
   sessionStorage.removeItem('token');
